@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Directorio Corporativo</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{box-sizing:border-box;font-family:Segoe UI,Arial;margin:0;padding:0}body{background:#eef3ff;color:#333}.header{background:linear-gradient(135deg,#0b3c8c,#1565c0);color:white;padding:25px;display:flex;align-items:center;gap:15px}.header i{font-size:35px}.container{display:flex;height:calc(100vh - 90px)}.sidebar{width:340px;background:white;padding:20px;overflow:auto}.search{width:100%;padding:12px;border-radius:10px;border:1px solid #ccc;margin-bottom:15px}.tree-title{padding:12px;background:#f4f7ff;border-radius:8px;margin:5px 0;cursor:pointer}.children{display:none;margin-left:20px}.children.active{display:block}.content{flex:1;padding:30px;overflow:auto}.card{background:white;border-radius:18px;padding:30px;box-shadow:0 10px 30px #0002;max-width:800px;margin:auto}.photo{width:150px;height:150px;border-radius:50%;object-fit:cover;display:block;margin:auto;border:5px solid #1565c0}.name{text-align:center;color:#0b3c8c;margin:20px}.details{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px}.detail{background:#f7f9ff;padding:15px;border-radius:10px;border-left:4px solid #1565c0}.dash{display:flex;gap:15px;margin-bottom:20px;flex-wrap:wrap}.stat{background:white;padding:20px;border-radius:12px;box-shadow:0 5px 15px #0001}@media(max-width:900px){.container{flex-direction:column}.sidebar{width:100%;height:300px}}
+</style>
+</head>
+<body>
+<header class="header"><i class="fa-solid fa-users"></i><h1>Directorio Corporativo</h1></header>
+<div class="container"><aside class="sidebar"><input id="search" class="search" placeholder="Buscar empleado..."><div id="tree"></div></aside><section class="content"><div class="dash"><div class="stat">Empleados: <b id="total">0</b></div><div class="stat">Gerencias: <b id="ger">0</b></div></div><div id="profile" class="card"><h2 class="name">Seleccione un colaborador</h2></div></section></div>
+<script>
+const sheetURL='https://docs.google.com/spreadsheets/d/e/2PACX-1vRxDhkQwelVrFx2HsNhqmgUtSYBuyMI222146eM6wXTHg1fzFKrOJTtG8upczKn9xZlKkoOOMsRDsPR/pub?gid=1015210015&single=true&output=csv&_='+Date.now();
+let empleados=[];
+fetch(sheetURL).then(r=>r.text()).then(csv=>{empleados=parseCSV(csv);crearArbol();document.getElementById('total').innerText=empleados.length;let g=campo('gerencia');document.getElementById('ger').innerText=new Set(empleados.map(x=>x[g])).size}).catch(e=>console.log(e));
+function parseCSV(c){let r=c.split(/\r?\n/).map(x=>x.split(','));let h=r.shift();return r.map(a=>{let o={};h.forEach((x,i)=>o[x.trim()]=(a[i]||'').trim());return o})}
+function campo(t){let k=Object.keys(empleados[0]||{});return k.find(x=>x.toLowerCase().includes(t))||k[0]}
+function crearArbol(){let tree=document.getElementById('tree'),g=campo('gerencia'),n=campo('nombre'),gr={};empleados.forEach(e=>(gr[e[g]||'Sin gerencia']??=[]).push(e));Object.keys(gr).forEach(a=>{let b=document.createElement('div');b.innerHTML=`<div class="tree-title"><i class="fa fa-building"></i> ${a}</div><div class="children"></div>`;let c=b.querySelector('.children');b.querySelector('.tree-title').onclick=()=>c.classList.toggle('active');gr[a].forEach(e=>{let i=document.createElement('div');i.className='tree-title';i.innerHTML=`<i class="fa fa-user"></i> ${e[n]}`;i.onclick=()=>mostrar(e);c.appendChild(i)});tree.appendChild(b)})}
+function mostrar(e){let p=document.getElementById('profile');let f=campo('foto');p.innerHTML=`<img class="photo" src="${e[f]||'https://via.placeholder.com/150'}"><h2 class="name">${e[campo('nombre')]}</h2><div class="details">${Object.keys(e).map(k=>`<div class="detail"><b>${k}</b><br>${e[k]}</div>`).join('')}</div>`}
+search.onkeyup=()=>{let t=search.value.toLowerCase();document.querySelectorAll('.tree-title').forEach(x=>x.style.display=x.innerText.toLowerCase().includes(t)?'block':'none')}
+</script></body></html>
