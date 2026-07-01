@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Dashboard BI - Análisis Comercial</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+:root{
+  --primary:#0b2d4d;
+  --secondary:#145da0;
+  --accent:#f4b400;
+  --bg:#f5f7fb;
+  --card:#ffffff;
+  --text:#1f2937;
+}
+
+body{
+  margin:0;
+  font-family:Segoe UI, Arial, sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  padding:30px;
+}
+
+/* HEADER */
+.header{
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  color:white;
+  padding:30px;
+  border-radius:18px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.2);
+}
+
+.header h1{
+  margin:0;
+  font-size:32px;
+}
+
+.header p{
+  margin-top:8px;
+  opacity:0.9;
+}
+
+/* KPI */
+.kpi-container{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:20px;
+  margin-top:25px;
+}
+
+.card{
+  background:var(--card);
+  padding:20px;
+  border-radius:16px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.08);
+  transition:0.3s;
+}
+
+.card:hover{
+  transform:translateY(-5px);
+}
+
+.value{
+  font-size:28px;
+  font-weight:bold;
+  color:var(--primary);
+}
+
+/* SECTION */
+.section{
+  background:white;
+  margin-top:25px;
+  padding:20px;
+  border-radius:16px;
+  box-shadow:0 5px 15px rgba(0,0,0,0.08);
+}
+
+/* TABLE */
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+th{
+  background:var(--primary);
+  color:white;
+  padding:10px;
+}
+
+td{
+  padding:10px;
+  border-bottom:1px solid #eee;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <h1>Dashboard Ejecutivo de Business Intelligence</h1>
+  <p>Análisis de Ventas, Productos, Clientes y Distribuidores</p>
+</div>
+
+<div class="kpi-container">
+  <div class="card"><b>Registros de Ventas</b><div class="value">161,617</div></div>
+  <div class="card"><b>Productos</b><div class="value">2,584</div></div>
+  <div class="card"><b>Clientes</b><div class="value">13</div></div>
+  <div class="card"><b>Distribuidores</b><div class="value">5</div></div>
+  <div class="card"><b>Estado</b><div class="value">OK</div></div>
+</div>
+
+<div class="section">
+  <h2>Modelo de Datos</h2>
+  <p>VENTAS (tabla de hechos) conectada con PRODUCTOS, CLIENTES y DISTRIBUIDORES (dimensiones).</p>
+</div>
+
+<div class="section">
+  <h2>Estructura del sistema</h2>
+  <table>
+    <tr>
+      <th>Tabla</th>
+      <th>Rol</th>
+    </tr>
+    <tr>
+      <td>VENTAS</td>
+      <td>Hechos</td>
+    </tr>
+    <tr>
+      <td>PRODUCTOS</td>
+      <td>Dimensión</td>
+    </tr>
+    <tr>
+      <td>CLIENTES</td>
+      <td>Dimensión</td>
+    </tr>
+    <tr>
+      <td>DISTRIBUIDORES</td>
+      <td>Dimensión</td>
+    </tr>
+  </table>
+</div>
+
+</body>
+</html>
